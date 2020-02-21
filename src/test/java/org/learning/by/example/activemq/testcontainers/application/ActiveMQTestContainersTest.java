@@ -1,5 +1,6 @@
 package org.learning.by.example.activemq.testcontainers.application;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.learning.by.example.activemq.testcontainers.jms.Consumer;
 import org.learning.by.example.activemq.testcontainers.jms.Publisher;
@@ -15,6 +16,8 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Queue;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -30,8 +33,7 @@ class ActiveMQTestContainersTest {
     private static final int ACTIVEMQ_PORT = 61616;
     private static final String TCP_FORMAT = "tcp://%s:%d";
     private static final String BROKER_URL_FORMAT = "activemq.broker-url=%s";
-    private static final String TEST_MESSAGE = "hello world";
-    private static final int TIMEOUT_WAITING_FOR_MESSAGE = 15;
+    private static final int TIMEOUT_WAITING_FOR_MESSAGES = 15;
 
     @SuppressWarnings("rawtypes")
     @Container
@@ -47,6 +49,7 @@ class ActiveMQTestContainersTest {
     }
 
     @Test
+    @DisplayName("Context load")
     void contestLoad() {
     }
 
@@ -57,12 +60,18 @@ class ActiveMQTestContainersTest {
     private Consumer consumer;
 
     @Test
-    void whenSendOneMessageThenWillReceiveOneMessage() {
+    @DisplayName("When sending messages Then will receive the messages sent")
+    void whenSendingMessagesThenWillReceiveTheMessagesSent() {
+        final List<String> messagesToSend = Arrays.asList("one", "two", "three", "four", "five", "six");
+        final int totalMessages = messagesToSend.size();
+
         consumer.resetMessages();
-        publisher.send(TEST_MESSAGE);
-        await().atMost(TIMEOUT_WAITING_FOR_MESSAGE, SECONDS).until(() -> consumer.getTotalMessages() == 1);
-        final Queue<String> messages = consumer.getMessages();
-        assertThat(messages).hasSize(1);
-        assertThat(messages).contains(TEST_MESSAGE);
+        messagesToSend.forEach(publisher::send);
+
+        await().atMost(TIMEOUT_WAITING_FOR_MESSAGES, SECONDS).until(() -> consumer.getTotalMessages() == totalMessages);
+
+        final Queue<String> messagesReceived = consumer.getMessages();
+        assertThat(messagesReceived).hasSize(totalMessages);
+        assertThat(messagesReceived).containsAll(messagesReceived);
     }
 }
