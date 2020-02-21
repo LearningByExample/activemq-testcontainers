@@ -5,5 +5,5 @@ activemq:
   consumer:
     topic: "demo-topic"
     concurrency:
-      lower : 1
-      upper : 1
+      lower : 3
+      upper : 5

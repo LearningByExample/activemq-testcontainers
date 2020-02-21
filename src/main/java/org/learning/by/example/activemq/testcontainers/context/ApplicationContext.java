@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.jms.core.JmsTemplate;
 
 @Configuration
-@Import(JMSConfigurer.class)
+@Import(JMSContext.class)
 public class ApplicationContext {
     @Bean
     @ConfigurationProperties("activemq")
