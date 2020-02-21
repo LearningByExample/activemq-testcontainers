@@ -2,12 +2,16 @@ package org.learning.by.example.activemq.testcontainers.context;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.learning.by.example.activemq.testcontainers.config.ActiveMQConfig;
+import org.learning.by.example.activemq.testcontainers.dto.SimpleMessage;
 import org.learning.by.example.activemq.testcontainers.jms.Consumer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @EnableJms
 public class JMSContext {
@@ -23,6 +27,9 @@ public class JMSContext {
     public ActiveMQConnectionFactory activeMQConnectionFactory(final ActiveMQConfig activeMQConfig) {
         final ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory();
         activeMQConnectionFactory.setBrokerURL(activeMQConfig.getBrokerUrl());
+        final List<String> trustedPackageList = new ArrayList<>(activeMQConnectionFactory.getTrustedPackages());
+        trustedPackageList.add(SimpleMessage.class.getPackageName());
+        activeMQConnectionFactory.setTrustedPackages(trustedPackageList);
         return activeMQConnectionFactory;
     }
 

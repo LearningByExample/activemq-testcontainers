@@ -1,5 +1,6 @@
 package org.learning.by.example.activemq.testcontainers.jms;
 
+import org.learning.by.example.activemq.testcontainers.dto.SimpleMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.core.JmsTemplate;
@@ -16,7 +17,7 @@ public class Publisher {
         this.topic = topic;
     }
 
-    public void send(final String message) {
+    public void send(final SimpleMessage message) {
         LOGGER.info("Sending message: '{}' ==> topic : '{}'", message, topic);
         template.convertAndSend(topic, message);
     }

@@ -2,6 +2,7 @@ package org.learning.by.example.activemq.testcontainers.application;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.learning.by.example.activemq.testcontainers.dto.SimpleMessage;
 import org.learning.by.example.activemq.testcontainers.jms.Consumer;
 import org.learning.by.example.activemq.testcontainers.jms.Publisher;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,7 +64,8 @@ class ActiveMQTestContainersTest {
     @Test
     @DisplayName("When sending messages Then will receive the messages sent")
     void whenSendingMessagesThenWillReceiveTheMessagesSent() {
-        final List<String> messagesToSend = Arrays.asList("one", "two", "three", "four", "five", "six");
+        final List<String> messagesText = Arrays.asList("one", "two", "three", "four", "five", "six");
+        final List<SimpleMessage> messagesToSend = messagesText.stream().map(SimpleMessage::new).collect(Collectors.toList());
         final int totalMessages = messagesToSend.size();
 
         consumer.resetMessages();
@@ -70,8 +73,8 @@ class ActiveMQTestContainersTest {
 
         await().atMost(TIMEOUT_WAITING_FOR_MESSAGES, SECONDS).until(() -> consumer.getTotalMessages() == totalMessages);
 
-        final Queue<String> messagesReceived = consumer.getMessages();
+        final Queue<SimpleMessage> messagesReceived = consumer.getMessages();
         assertThat(messagesReceived).hasSize(totalMessages);
-        assertThat(messagesReceived).containsAll(messagesReceived);
+        assertThat(messagesReceived).containsAll(messagesToSend);
     }
 }
