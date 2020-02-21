@@ -5,7 +5,6 @@ import org.learning.by.example.activemq.testcontainers.config.ActiveMQConfig;
 import org.learning.by.example.activemq.testcontainers.dto.SimpleMessage;
 import org.learning.by.example.activemq.testcontainers.jms.Consumer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
@@ -13,7 +12,6 @@ import org.springframework.jms.core.JmsTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-@EnableJms
 public class JMSContext {
     final ActiveMQConfig activeMQConfig;
     final Consumer consumer;
