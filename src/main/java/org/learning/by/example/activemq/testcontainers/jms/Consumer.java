@@ -21,10 +21,6 @@ public class Consumer {
         this.topic = topic;
     }
 
-    public String getTopic() {
-        return topic;
-    }
-
     public void resetMessages() {
         totalMessages.set(0);
         messages.clear();
@@ -39,8 +35,8 @@ public class Consumer {
     }
 
     @JmsListener(
-            destination = "${activemq.consumer.topic}",
-            concurrency = "${activemq.consumer.concurrency.lower}-${activemq.consumer.concurrency.upper}"
+            destination = "#{@activeMQConfig.consumer.topic}",
+            concurrency = "#{@activeMQConfig.consumer.concurrency.lower}-#{@activeMQConfig.consumer.concurrency.upper}"
     )
     public void receiveMessage(final SimpleMessage message) {
         messages.add(message);
