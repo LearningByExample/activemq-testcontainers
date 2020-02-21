@@ -1,0 +1,8 @@
+logging:
+  level:
+    org:
+      learning:
+        by:
+          example:
+            activemq:
+              testcontainers: DEBUG

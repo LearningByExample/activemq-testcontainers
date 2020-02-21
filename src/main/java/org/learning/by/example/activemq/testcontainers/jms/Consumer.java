@@ -45,6 +45,6 @@ public class Consumer {
     public void receiveMessage(final SimpleMessage message) {
         messages.add(message);
         totalMessages.incrementAndGet();
-        LOGGER.info("got message topic: '{} <== message: '{}'", topic, message);
+        LOGGER.debug("got message topic: '{} <== message: '{}'", topic, message);
     }
 }

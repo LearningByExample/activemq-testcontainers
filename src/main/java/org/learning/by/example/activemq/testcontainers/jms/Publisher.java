@@ -18,7 +18,7 @@ public class Publisher {
     }
 
     public void send(final SimpleMessage message) {
-        LOGGER.info("Sending message: '{}' ==> topic : '{}'", message, topic);
+        LOGGER.debug("Sending message: '{}' ==> topic : '{}'", message, topic);
         template.convertAndSend(topic, message);
     }
 }

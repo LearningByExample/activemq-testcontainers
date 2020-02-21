@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -29,6 +30,7 @@ import static org.awaitility.Awaitility.await;
 @SpringBootTest
 @Testcontainers
 @ContextConfiguration(initializers = {ActiveMQTestContainersTest.Initializer.class})
+@ActiveProfiles("test")
 class ActiveMQTestContainersTest {
     private final static Logger LOGGER = LoggerFactory.getLogger(ActiveMQTestContainersTest.class);
     private static final String ACTIVEMQ_IMAGE = "rmohr/activemq";
