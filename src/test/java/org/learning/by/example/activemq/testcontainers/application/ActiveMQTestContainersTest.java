@@ -26,20 +26,20 @@ import static org.awaitility.Awaitility.await;
 @ContextConfiguration(initializers = {ActiveMQTestContainersTest.Initializer.class})
 class ActiveMQTestContainersTest {
     private final static Logger LOGGER = LoggerFactory.getLogger(ActiveMQTestContainersTest.class);
-    private static final String ACTIVEMQ_DOCKER_IMAGE = "rmohr/activemq";
-    private static final String TCP_URL_FORMAT = "tcp://%s:%d";
+    private static final String ACTIVEMQ_IMAGE = "rmohr/activemq";
+    private static final int ACTIVEMQ_PORT = 61616;
+    private static final String TCP_FORMAT = "tcp://%s:%d";
     private static final String BROKER_URL_FORMAT = "activemq.broker-url=%s";
-    private static final int ACTIVE_MQ_DEFAULT_PORT = 61616;
     private static final String TEST_MESSAGE = "hello world";
     private static final int TIMEOUT_WAITING_FOR_MESSAGE = 15;
 
     @SuppressWarnings("rawtypes")
     @Container
-    private static final GenericContainer activemq = new GenericContainer(ACTIVEMQ_DOCKER_IMAGE).withExposedPorts(ACTIVE_MQ_DEFAULT_PORT);
+    private static final GenericContainer activemq = new GenericContainer(ACTIVEMQ_IMAGE).withExposedPorts(ACTIVEMQ_PORT);
 
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            final String url = String.format(TCP_URL_FORMAT, activemq.getContainerIpAddress(), activemq.getFirstMappedPort());
+            final String url = String.format(TCP_FORMAT, activemq.getContainerIpAddress(), activemq.getFirstMappedPort());
             LOGGER.info("ActiveMQ URL: '{}'", url);
             final String property = String.format(BROKER_URL_FORMAT, url);
             TestPropertyValues.of(property).applyTo(configurableApplicationContext.getEnvironment());
