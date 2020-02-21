@@ -1,8 +1,5 @@
 package org.learning.by.example.activemq.testcontainers.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
-@ConfigurationProperties("activemq")
 public class ActiveMQConfig {
     private String brokerUrl;
     private Publisher publisher;
@@ -34,6 +31,7 @@ public class ActiveMQConfig {
 
     public static class Publisher {
         private String topic;
+
         public String getTopic() {
             return topic;
         }
