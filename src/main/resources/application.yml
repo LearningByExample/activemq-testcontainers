@@ -1,0 +1,9 @@
+activemq:
+  broker-url: tcp://localhost:61616
+  publisher:
+    topic: "demo-topic"
+  consumer:
+    topic: "demo-topic"
+    concurrency:
+      lower : 1
+      upper : 1
